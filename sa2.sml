@@ -1,16 +1,17 @@
 (* Solutions to SA2 assignment, Intro to ML *)
 
-(* Name:                                    *)
-(* Time spent on HW6:
-*)
+(* Name: Chris Peña                             *)
+(* Time spent on SA2: 2 hours *)
 
-(* Collaborators and references:
+(* Collaborators and references: ChatGPT
 *)
 
 (* indicate planning to use the Unit testing module *)
 use "Unit.sml";
 
 (**** Problem A ****)
+(* Problem A will till you whether or not a list is empty and will do so in constant time and without using Standard
+Ml Library *)
 
 fun mynull []       = true
   | mynull (_::_)   = false
@@ -20,16 +21,35 @@ val () =
     (fn () => mynull [])
     true
 
+(** Additional Unit Test for Problem A **)
+val () =
+    Unit.checkExpectWith Bool.toString "mynull [1, 2, 3, 4] should be false"
+    (fn () => mynull [1, 2, 3, 4])
+    false
+
+(** One more Unit test for the road **)
+val () =
+    Unit.checkExpectWith Bool.toString "mynull [1] should be false"
+    (fn () => mynull [1])
+    false
+
+
 
 (**** Problem B ****)
-(*
-fun firstVowel _ = false
+(* Problem B tasks with returning false if if the list is empty or if the first letter is not a vowel *)
+fun firstVowel []      = false
+    | firstVowel (x::_) =
+        let val vowel = Char.toLower x
+        in List.exists (fn vowel => vowel = lowercase) [#"a", #"e", #"i", #"o", #"u"]
+        end; (** Fix above later **)
+
 
 val () =
     Unit.checkExpectWith Bool.toString "firstVowel 'ack' should be true"
     (fn () => firstVowel [#"a",#"c",#"k"])
     true
 *)
+
 (**** Problem C ****)
 (*
 fun reverse xs = xs
