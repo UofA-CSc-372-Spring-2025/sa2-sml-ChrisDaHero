@@ -125,29 +125,98 @@ val () =
 
 
 (**** Problem F ****)
-(*
-fun concat xs = xs
-*)
+(* concat will take a list of lists and produce a single list in order *)
+fun concat [] = []
+    | concat lists = foldr (fn (xs, acc) => foldr op:: acc xs) [] lists;
+(* The above will have foldr iterate over the lists and process each sublist xs then,
+the additional inner foldr will iterate over the sublist xxs adding each element to acc
+using op::*)
+
+val () =
+    Unit.checkExpectWith (Unit.listString Int.toString)
+    "concat [[1,2,3], [4,5], [12,21]] should be [1, 2, 3, 4, 5, 12, 21]"
+    (fn () => concat [[1,2,3], [4,5], [12, 21]])
+    [1, 2, 3, 4, 5, 12, 21];
+
+
+
 (**** Problem G ****)
-(*
-fun isDigit _    = false;
-*)
+(* this function takes a single character and returns true if the character is a digit ('0' to '9')
+and false other wise using pattern matching and avoiding using if statements and Standard Basis Library functions *)
+
+
+fun isDigit #"0" = true
+  | isDigit #"1" = true
+  | isDigit #"2" = true
+  | isDigit #"3" = true
+  | isDigit #"4" = true
+  | isDigit #"5" = true
+  | isDigit #"6" = true
+  | isDigit #"7" = true
+  | isDigit #"8" = true
+  | isDigit #"9" = true
+  | isDigit _ = false;
+
+val () =
+    Unit.checkExpectWith Bool.toString "isDigit #'A' should be false"
+    (fn () => isDigit #"A")
+    false
+
+(** Additional Unit Test for Problem G **)
+val () =
+    Unit.checkExpectWith Bool.toString "isDigit #'9' should be true"
+    (fn () => isDigit #"9")
+    true
+
+
+
 (**** Problem H ****)
-(*
-fun isAlpha c = false
-*)
+(* problem H takes a single character and will return true if the character is an alphabetical letter lowercase and uppercase*)
+(* the strat here letters from a to z are between 97 and 122 and A to Z are between 65 and 90 *)
+fun isAlpha c =
+    (ord c > 64 andalso ord c < 91)
+    orelse (ord c > 96 andalso ord c < 123);
+
+(* above is a great example of proper "and" and "else" usage in SML *)
+
+val () =
+    Unit.checkExpectWith Bool.toString "isAlpha #'A' should be true"
+    (fn () => isAlpha #"A")
+    true
+
+val () =
+    Unit.checkExpectWith Bool.toString "isAlpha #'z' should be true"
+    (fn () => isAlpha #"z")
+    true
+
+(** Additional Unit Test for Problem H **)
+val () =
+    Unit.checkExpectWith Bool.toString "isDigit #'9' should be false"
+    (fn () => isAlpha #"9")
+    false
+
 (**** Problem I ****)
-(*
-fun svgCircle (cx, cy, r, fill) = "NOT IMPLEMENTED YET"
+(* This function takes a tuple of four values and will return a SVG string like the following....
+val it = "<circle cx=\"200\" cy=\"300\" r=\"100\" fill=\"red\" />" : string *)
+
+fun svgCircle (cx, cy, r, fill) =
+    "<circle cx=\"" ^ Int.toString cx ^
+    "\" cy=\"" ^ Int.toString cy
+    ^ "\" r=\""
+    ^ Int.toString r ^ "\" fill=\"" ^ fill ^ "\" />";
+
 
 val () =
   Unit.checkExpectWith (fn x => x)
   "svgCircle (200, 300, 100, \"red\") should return <circle cx=\"200\" cy=\"300\" r=\"100\" fill=\"red\" />"
   (fn () => svgCircle (200, 300, 100, "red"))
   "<circle cx=\"200\" cy=\"300\" r=\"100\" fill=\"red\" />";
-*)
+
+
 (**** Problem J ****)
-(*
+(* partition is a function which takes a predicate function and a list. The list will be split into
+two 1. contains elements that satify the predicate and 2. contains elements that don't satisfy the predicate.
+this must be done without using any Standard Basis Library functions instead recursion and pattern matching.*)
 fun partition p (x :: xs) = ([],[])
 
 val () =
@@ -155,7 +224,6 @@ val () =
   "partition (fn x => x mod 2 = 0) [1, 2, 3, 4, 5] should return ([2, 4], [1, 3, 5])"
   (fn () => partition (fn x => x mod 2 = 0) [1, 2, 3, 4, 5])
   ([2, 4], [1, 3, 5]);
-*)
 
 (* Unit testing reporting *)
 
