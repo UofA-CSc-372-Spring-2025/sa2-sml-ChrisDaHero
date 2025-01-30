@@ -217,7 +217,16 @@ val () =
 (* partition is a function which takes a predicate function and a list. The list will be split into
 two 1. contains elements that satify the predicate and 2. contains elements that don't satisfy the predicate.
 this must be done without using any Standard Basis Library functions instead recursion and pattern matching.*)
-fun partition p (x :: xs) = ([],[])
+
+fun partition _ [] = ([], [])
+    | partition p (x :: xs) =
+        let
+            val (yes, no) = partition p xs
+        in
+            if p x then (x :: yes, no)
+            else (yes, x :: no)
+
+        end;
 
 val () =
   Unit.checkExpectWith (fn (l1, l2) => "(" ^ Unit.listString Int.toString l1 ^ ", " ^ Unit.listString Int.toString l2 ^ ")")
